@@ -27,51 +27,115 @@ A fully functional distributed file system built in pure Python that stores file
 ```
 
 ### Key Components
-
-| Component | File | Responsibility |
-|-----------|------|----------------|
-| **Master** | `master/master.py` | Central coordinator — handles all client requests, delegates to sub-managers |
-| **MetadataManager** | `master/metadata_manager.py` | Persists file/chunk locations in JSON; thread-safe with atomic writes |
-| **NodeManager** | `master/node_manager.py` | Tracks live nodes via heartbeat; detects failures with a watchdog thread |
-| **ReplicationManager** | `master/replication_manager.py` | Monitors replica health; auto-heals under-replicated chunks |
-| **Node** | `nodes/node.py` | TCP server that stores/serves/deletes chunk files; sends heartbeats |
-| **Client** | `client/client.py` | CLI for upload, download, list, delete |
-| **Chunking** | `common/chunking.py` | Splits files into 1 MB chunks; reassembles in order |
-| **Hashing** | `common/hashing.py` | SHA-256 integrity checks for every chunk and whole-file verification |
+| Component              | File                            | Responsibility                                           |
+| ---------------------- | ------------------------------- | -------------------------------------------------------- |
+| **Master**             | `master/master.py`              | Central coordinator — handles all client requests        |
+| **MetadataManager**    | `master/metadata_manager.py`    | Stores file → chunk → node mapping (thread-safe, atomic) |
+| **NodeManager**        | `master/node_manager.py`        | Tracks nodes via heartbeat + failure detection           |
+| **ReplicationManager** | `master/replication_manager.py` | Handles automatic recovery and re-replication            |
+| **Node**               | `nodes/node.py`                 | Stores chunks, serves data, sends heartbeat              |
+| **Client**             | `client/client.py`              | CLI interface for user operations                        |
+| **Chunking**           | `common/chunking.py`            | File splitting and merging                               |
+| **Hashing**            | `common/hashing.py`             | Data integrity using SHA-256                             |
 
 ---
 
 ## Fault Tolerance Mechanisms
+🔐 Fault Tolerance Mechanisms (Implementation + Feature Mapping)
 
-### 1. Replication (RF = 3)
-Every chunk is stored on **3 independent nodes**. A client download succeeds as long as at least 1 replica is alive.
+This system ensures high availability, data integrity, and automatic recovery using the following mechanisms:
 
-### 2. Heartbeat-Based Failure Detection
-- Nodes send a heartbeat every **5 seconds** (TCP + UDP).
-- The master's watchdog marks a node **DEAD** after **15 seconds** of silence.
-- An `on_failure` callback immediately triggers re-replication.
+✅ 1. Replication (RF = 3)
+Implementation:
+File: common/constants.py
+REPLICATION_FACTOR = 3
+Node selection: node_manager.py → pick_nodes_for_chunk()
+       Every file is split into chunks, and each chunk is stored on 3 independent nodes.
+       Even if 2 nodes fail, the system can still serve the file using the remaining replica.
 
-### 3. Automatic Re-Replication
-When a node dies:
-1. The `ReplicationManager` removes the dead node from all chunk metadata.
-2. For each under-replicated chunk, it fetches a copy from a surviving replica.
-3. It pushes the chunk to a new healthy node.
-4. Metadata is updated atomically.
+✅ 2. Heartbeat-Based Failure Detection (TCP + UDP)
+Implementation:
+File: nodes/node.py
+Functions:
+_send_heartbeats() (TCP)
+_send_udp_heartbeats() (UDP)
+       Each node sends a heartbeat to the master every 5 seconds using both TCP and UDP.
+       TCP → reliable communication
+       UDP → fast, lightweight detection
+       This dual approach improves reliability and responsiveness.
 
-### 4. SHA-256 Integrity Checks
-- Each chunk has a SHA-256 hash computed before upload.
-- On store: the node verifies the received data matches the hash before writing.
-- On download: the client re-verifies each chunk and the final reassembled file.
-- Corrupted chunks are detected immediately and an error is raised.
+✅ 3. Failure Detection (Watchdog Mechanism)
+Implementation:
+File: master/node_manager.py
+Function: _watchdog()
+if time.time() - last_seen > NODE_TIMEOUT:
+    node.alive = False
 
-### 5. Atomic Metadata Persistence
-- Metadata is written via write-to-temp + atomic rename, preventing corruption on crash.
+If a node does not send a heartbeat for 15 seconds, it is marked as DEAD.
 
-### 6. Periodic Health Audits
-- Every 30 seconds the `ReplicationManager` scans all chunks and repairs any that are under-replicated (handles silent data loss / disk failures).
+This triggers recovery mechanisms immediately.
 
----
+✅ 4. Automatic Recovery (Re-Replication)
+Implementation:
+File: master/replication_manager.py
+Functions:
+handle_node_failure()
+_periodic_check()
+_rereplicate()
 
+When a node fails:
+The system removes the failed node from metadata.
+It identifies under-replicated chunks.
+Fetches data from a surviving replica.
+Copies it to a new healthy node.
+Updates metadata atomically.
+
+This ensures the replication factor is always maintained.
+
+✅ 5. Data Integrity (SHA-256 Hashing)
+Implementation:
+       File: common/hashing.py
+       Functions:
+       hash_bytes()
+       verify_chunk()
+       verify_file()
+
+Integrity checks are performed at multiple stages:
+
+Before storing chunk.
+While receiving chunk.
+After full file reconstruction.
+
+Any corrupted data is detected immediately, and the operation fails safely.
+
+✅ 6. Metadata Management (Atomic & Thread-Safe)
+Implementation:
+File: master/metadata.json
+Managed by: MetadataManager
+
+Example:
+file.txt → [node1, node2, node3]
+
+Metadata stores file → chunk → node mapping
+
+Uses:
+Thread-safe access.
+Write-to-temp + atomic rename.
+
+Prevents corruption even during crashes.
+
+✅ 7. Periodic Health Audits (Self-Healing System)
+Implementation:
+File: master/replication_manager.py
+Function: _periodic_check()
+Runs every 30 seconds
+It:
+
+Scans all chunks.
+Detects under-replication.
+Automatically repairs missing replicas.
+
+Handles silent failures (e.g., disk corruption, unnoticed node issues)
 ## Quick Start
 
 ### Prerequisites
