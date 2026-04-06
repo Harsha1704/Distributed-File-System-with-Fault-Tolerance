@@ -84,3 +84,27 @@
 2026-04-06 18:54:01 [INFO] node3 — Node 3 ready — listening on port 9102
 2026-04-06 18:55:01 [DEBUG] node3 — Heartbeat to master failed: timed out
 2026-04-06 18:55:29 [DEBUG] node3 — Stored chunk sample1_chunk_0 (129 bytes)
+2026-04-06 22:02:09 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 22:02:09 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 22:10:35 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 22:10:35 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 22:12:18 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 22:12:18 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 22:13:39 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 22:13:39 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 22:15:59 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 22:15:59 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 22:25:39 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 22:25:39 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 22:26:12 [DEBUG] node3 — Stored chunk sample5_chunk_0 (2052 bytes)
+2026-04-06 22:29:29 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 22:39:57 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 22:39:57 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 22:41:18 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 22:41:18 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 22:44:54 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 22:44:54 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 22:45:18 [DEBUG] node3 — Stored chunk sample5_chunk_0 (2052 bytes)
+2026-04-06 22:45:24 [DEBUG] node3 — Stored chunk sample1_chunk_0 (129 bytes)
+2026-04-06 22:54:11 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 22:54:11 [INFO] node3 — Node 3 ready — listening on port 9102

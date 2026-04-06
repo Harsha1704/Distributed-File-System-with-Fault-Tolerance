@@ -34,3 +34,30 @@
 2026-04-06 18:55:45 [INFO] client —   [OK] sample1_chunk_0 <- 127.0.0.1:9100
 2026-04-06 18:56:41 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
 2026-04-06 18:56:41 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-06 22:16:14 [WARNING] client — Uploading EMPTY file
+2026-04-06 22:16:14 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 22:16:14 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-06 22:16:59 [WARNING] client — Uploading EMPTY file
+2026-04-06 22:16:59 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 22:16:59 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-06 22:25:57 [INFO] client — Download plan for 'sas.txt': 0 chunk(s)
+2026-04-06 22:26:12 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 22:26:12 [INFO] client —   [OK] sample5_chunk_0 stored on 3 node(s)
+2026-04-06 22:26:12 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-06 22:26:17 [INFO] client — Download plan for 'sample3.txt': 0 chunk(s)
+2026-04-06 22:45:18 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 22:45:18 [INFO] client —   [OK] sample5_chunk_0 stored on 3 node(s)
+2026-04-06 22:45:18 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-06 22:45:24 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 22:45:24 [INFO] client —   [OK] sample1_chunk_0 stored on 3 node(s)
+2026-04-06 22:45:24 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-06 22:45:46 [INFO] client — Download plan for 'sas.txt': 0 chunk(s)
+2026-04-06 22:45:49 [INFO] client — Download plan for 'sample5.jpg': 1 chunk(s)
+2026-04-06 22:45:49 [INFO] client —   [OK] sample5_chunk_0 <- 127.0.0.1:9102
+2026-04-06 22:54:40 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 22:54:42 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-06 22:54:48 [WARNING] client — Uploading EMPTY file
+2026-04-06 22:54:48 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 22:54:48 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-06 22:54:51 [INFO] client — Download plan for 'sample1.txt': 1 chunk(s)
+2026-04-06 22:54:51 [INFO] client —   [OK] sample1_chunk_0 <- 127.0.0.1:9101

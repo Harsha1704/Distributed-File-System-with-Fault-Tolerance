@@ -24,6 +24,10 @@ from common.utils import get_logger
 logger = get_logger("node_manager")
 
 
+# ---------------------------------------------------------------- #
+#  Node Info
+# ---------------------------------------------------------------- #
+
 class NodeInfo:
     def __init__(self, node_id: int, host: str, port: int) -> None:
         self.node_id   = node_id
@@ -34,12 +38,20 @@ class NodeInfo:
 
     @property
     def address(self) -> dict:
-        return {"host": self.host, "port": self.port, "node_id": self.node_id}
+        return {
+            "host": self.host,
+            "port": self.port,
+            "node_id": self.node_id
+        }
 
     def __repr__(self) -> str:
         status = "ALIVE" if self.alive else "DEAD"
         return f"Node({self.node_id}, {self.host}:{self.port}, {status})"
 
+
+# ---------------------------------------------------------------- #
+#  Node Manager
+# ---------------------------------------------------------------- #
 
 class NodeManager:
 
@@ -47,8 +59,11 @@ class NodeManager:
         self._nodes: dict[int, NodeInfo] = {}
         self._lock  = threading.RLock()
 
+        # 🔥 Start watchdog thread (auto detect dead nodes)
         self._watchdog_thread = threading.Thread(
-            target=self._watchdog, daemon=True, name="NodeWatchdog"
+            target=self._watchdog,
+            daemon=True,
+            name="NodeWatchdog"
         )
         self._watchdog_thread.start()
 
@@ -65,7 +80,9 @@ class NodeManager:
                 logger.info(f"Registered {self._nodes[node_id]}")
 
     def heartbeat(self, node_id: int, host: str | None = None, port: int | None = None) -> None:
-        """Update last-seen timestamp; registers the node if unknown."""
+        """
+        Update last-seen timestamp; registers node if unknown.
+        """
         with self._lock:
             if node_id not in self._nodes:
                 h = host or "127.0.0.1"
@@ -75,13 +92,13 @@ class NodeManager:
 
             node = self._nodes[node_id]
 
-            # 🔥 CRITICAL FIX: always update heartbeat AND mark alive
+            # 🔥 IMPORTANT FIX
             node.last_seen = time.time()
 
             if not node.alive:
                 logger.info(f"Node {node_id} came back ONLINE")
 
-            node.alive = True  # ✅ ENSURE node becomes alive again
+            node.alive = True
 
             logger.debug(f"Heartbeat received from Node {node_id}")
 
@@ -91,8 +108,7 @@ class NodeManager:
 
     def live_nodes(self) -> list[NodeInfo]:
         with self._lock:
-            alive_nodes = [n for n in self._nodes.values() if n.alive]
-            return alive_nodes
+            return [n for n in self._nodes.values() if n.alive]
 
     def get_node(self, node_id: int) -> NodeInfo | None:
         with self._lock:
@@ -100,8 +116,7 @@ class NodeManager:
 
     def pick_nodes_for_chunk(self, exclude: list[int] | None = None) -> list[NodeInfo]:
         """
-        Return up to REPLICATION_FACTOR live nodes for chunk placement.
-        Nodes in *exclude* are skipped (used during re-replication).
+        Return up to REPLICATION_FACTOR live nodes.
         """
         exclude = exclude or []
 
@@ -111,11 +126,10 @@ class NodeManager:
                 if n.alive and n.node_id not in exclude
             ]
 
-        # 🔥 Improved logging clarity
         if len(candidates) < REPLICATION_FACTOR:
             logger.warning(
                 f"Only {len(candidates)} live node(s) available "
-                f"(replication factor = {REPLICATION_FACTOR})"
+                f"(required {REPLICATION_FACTOR})"
             )
 
         random.shuffle(candidates)
@@ -126,29 +140,34 @@ class NodeManager:
             return [
                 {
                     "node_id": n.node_id,
-                    "host":    n.host,
-                    "port":    n.port,
-                    "alive":   n.alive,
+                    "host": n.host,
+                    "port": n.port,
+                    "alive": n.alive,
                     "last_seen": n.last_seen,
                 }
                 for n in self._nodes.values()
             ]
 
     # ---------------------------------------------------------------- #
-    #  Watchdog
+    #  Watchdog (🔥 MOST IMPORTANT)
     # ---------------------------------------------------------------- #
 
     def _watchdog(self) -> None:
-        """Background thread: marks nodes DEAD if heartbeat times out."""
+        """
+        Background thread:
+        Marks nodes DEAD if heartbeat timeout occurs.
+        """
         while True:
             time.sleep(HEARTBEAT_INTERVAL)
+
             now = time.time()
 
             with self._lock:
                 for node in self._nodes.values():
                     if node.alive and (now - node.last_seen) > NODE_TIMEOUT:
                         node.alive = False
+
                         logger.warning(
-                            f"Node {node.node_id} timed out — marked DEAD "
-                            f"(last seen {now - node.last_seen:.1f}s ago)"
+                            f"Node {node.node_id} marked DEAD "
+                            f"(last seen {round(now - node.last_seen, 2)}s ago)"
                         )

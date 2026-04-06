@@ -86,3 +86,30 @@
 2026-04-06 18:58:06 [DEBUG] node1 — Heartbeat to master failed: timed out
 2026-04-06 18:58:16 [DEBUG] node1 — Heartbeat to master failed: timed out
 2026-04-06 18:58:26 [DEBUG] node1 — Heartbeat to master failed: timed out
+2026-04-06 22:02:09 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-06 22:02:09 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-06 22:09:06 [DEBUG] node1 — Heartbeat to master failed: [WinError 10054] An existing connection was forcibly closed by the remote host
+2026-04-06 22:10:35 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-06 22:10:35 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-06 22:12:17 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-06 22:12:17 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-06 22:13:39 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-06 22:13:39 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-06 22:15:59 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-06 22:15:59 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-06 22:17:11 [DEBUG] node1 — Heartbeat to master failed: [WinError 10061] No connection could be made because the target machine actively refused it
+2026-04-06 22:25:39 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-06 22:25:39 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-06 22:26:12 [DEBUG] node1 — Stored chunk sample5_chunk_0 (2052 bytes)
+2026-04-06 22:29:30 [DEBUG] node1 — Heartbeat to master failed: timed out
+2026-04-06 22:39:57 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-06 22:39:57 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-06 22:41:18 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-06 22:41:18 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-06 22:44:54 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-06 22:44:54 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-06 22:45:18 [DEBUG] node1 — Stored chunk sample5_chunk_0 (2052 bytes)
+2026-04-06 22:45:24 [DEBUG] node1 — Stored chunk sample1_chunk_0 (129 bytes)
+2026-04-06 22:54:11 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-06 22:54:11 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-06 22:54:40 [DEBUG] node1 — Stored chunk sample4_chunk_0 (129 bytes)
