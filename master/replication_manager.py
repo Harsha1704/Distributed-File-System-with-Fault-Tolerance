@@ -1,11 +1,5 @@
 """
 replication_manager.py — Monitors replica health and triggers re-replication.
-
-When a node fails, this module:
-  1. Finds all chunks that are now under-replicated.
-  2. Fetches each chunk from a surviving node.
-  3. Pushes it to a new node.
-  4. Updates metadata.
 """
 
 from __future__ import annotations
@@ -34,29 +28,32 @@ class ReplicationManager:
             target=self._periodic_check, daemon=True, name="ReplicationChecker"
         )
         self._checker.start()
+
         logger.info(
             f"ReplicationManager started "
-            f"(check interval = {REPLICATION_CHECK_INTERVAL}s, "
-            f"factor = {REPLICATION_FACTOR})"
+            f"(interval={REPLICATION_CHECK_INTERVAL}s, factor={REPLICATION_FACTOR})"
         )
 
     # ---------------------------------------------------------------- #
-    #  Called immediately when a node is detected as dead               #
+    #  Node failure handler
     # ---------------------------------------------------------------- #
 
     def handle_node_failure(self, failed_node_id: int) -> None:
-        """Trigger immediate re-replication for chunks on the failed node."""
-        logger.warning(f"Handling failure of node {failed_node_id} …")
+        logger.warning(f"Handling failure of node {failed_node_id}…")
+
         under = self._meta.remove_node_from_all_chunks(failed_node_id)
+
         if not under:
-            logger.info(f"No chunks were solely on node {failed_node_id}.")
+            logger.info(f"No affected chunks for node {failed_node_id}")
             return
-        logger.info(f"{len(under)} chunk(s) need re-replication after node {failed_node_id} failed.")
+
+        logger.info(f"{len(under)} chunk(s) need re-replication")
+
         for filename, chunk_id in under:
             self._rereplicate(filename, chunk_id)
 
     # ---------------------------------------------------------------- #
-    #  Periodic proactive health check                                   #
+    #  Periodic health check
     # ---------------------------------------------------------------- #
 
     def _periodic_check(self) -> None:
@@ -65,66 +62,135 @@ class ReplicationManager:
             self._check_all_chunks()
 
     def _check_all_chunks(self) -> None:
-        live_ids = {n.node_id for n in self._nodes.live_nodes()}
+        live_nodes = self._nodes.live_nodes()
+        live_ids = {n.node_id for n in live_nodes}
+        total_alive = len(live_ids)
+
         for filename, chunk in self._meta.all_chunks():
+
             healthy = [nid for nid in chunk["nodes"] if nid in live_ids]
+
             if len(healthy) < REPLICATION_FACTOR:
+
+                # 🔥 IMPORTANT FIX: skip if replication impossible
+                if total_alive <= len(healthy):
+                    logger.warning(
+                        f"Skipping repair {chunk['chunk_id']} — "
+                        f"no extra nodes available "
+                        f"(alive={total_alive}, have={len(healthy)})"
+                    )
+                    continue
+
                 logger.info(
                     f"Under-replicated: {chunk['chunk_id']} "
-                    f"({len(healthy)}/{REPLICATION_FACTOR} replicas) — triggering repair"
+                    f"({len(healthy)}/{REPLICATION_FACTOR}) → repairing"
                 )
+
                 self._rereplicate(filename, chunk["chunk_id"])
 
     # ---------------------------------------------------------------- #
-    #  Core re-replication logic                                         #
+    #  Core re-replication logic
     # ---------------------------------------------------------------- #
 
     def _rereplicate(self, filename: str, chunk_id: str) -> None:
+
         file_record = self._meta.get_file(filename)
         if not file_record:
             return
+
         chunk = file_record["chunks"].get(chunk_id)
         if not chunk:
             return
 
-        live_ids  = {n.node_id for n in self._nodes.live_nodes()}
-        have_ids  = [nid for nid in chunk["nodes"] if nid in live_ids]
-        need      = REPLICATION_FACTOR - len(have_ids)
+        live_nodes = self._nodes.live_nodes()
+        live_ids = {n.node_id for n in live_nodes}
+
+        have_ids = [nid for nid in chunk["nodes"] if nid in live_ids]
+        need = REPLICATION_FACTOR - len(have_ids)
+
         if need <= 0:
             return
 
-        # Fetch chunk data from a surviving replica
+        # 🔥 FIX: check available nodes BEFORE trying
+        available_nodes = [
+            n for n in live_nodes
+            if n.node_id not in have_ids
+        ]
+
+        if not available_nodes:
+            logger.warning(
+                f"No nodes available to re-replicate {chunk_id} "
+                f"(have={have_ids})"
+            )
+            return
+
+        # ------------------------------------------------------------ #
+        # Fetch chunk from existing replica
+        # ------------------------------------------------------------ #
+
         data = None
+
         for src_id in have_ids:
             src = self._nodes.get_node(src_id)
-            if src is None:
+            if not src:
                 continue
+
             try:
                 data = self._fetch_chunk(src.host, src.port, chunk_id)
                 break
             except Exception as exc:
-                logger.warning(f"Could not fetch {chunk_id} from node {src_id}: {exc}")
+                logger.warning(f"Fetch failed from node {src_id}: {exc}")
 
         if data is None:
-            logger.error(f"LOST CHUNK: {chunk_id} — no surviving replica found!")
+            logger.error(f"LOST CHUNK: {chunk_id} — no replicas left!")
             return
 
-        # Push to new nodes
-        new_nodes = self._nodes.pick_nodes_for_chunk(exclude=have_ids)[:need]
+        # ------------------------------------------------------------ #
+        # Select new nodes safely
+        # ------------------------------------------------------------ #
+
+        candidates = self._nodes.pick_nodes_for_chunk(exclude=have_ids)
+
+        if not candidates:
+            logger.warning(
+                f"Replication failed for {chunk_id} — no eligible nodes"
+            )
+            return
+
+        new_nodes = candidates[:need]
+
+        # ------------------------------------------------------------ #
+        # Store chunk on new nodes
+        # ------------------------------------------------------------ #
+
         for target in new_nodes:
             try:
                 self._store_chunk(
-                    target.host, target.port, chunk_id, data, chunk["hash"], chunk["index"]
+                    target.host,
+                    target.port,
+                    chunk_id,
+                    data,
+                    chunk["hash"],
+                    chunk["index"]
                 )
-                self._meta.add_chunk_node(filename, chunk_id, target.node_id)
+
+                self._meta.add_chunk_node(
+                    filename,
+                    chunk_id,
+                    target.node_id
+                )
+
                 logger.info(
-                    f"Re-replicated {chunk_id} → node {target.node_id} ({target.host}:{target.port})"
+                    f"Re-replicated {chunk_id} → node {target.node_id}"
                 )
+
             except Exception as exc:
-                logger.error(f"Re-replication to node {target.node_id} failed: {exc}")
+                logger.error(
+                    f"Replication to node {target.node_id} failed: {exc}"
+                )
 
     # ---------------------------------------------------------------- #
-    #  Low-level node communication                                      #
+    #  Node communication
     # ---------------------------------------------------------------- #
 
     @staticmethod
@@ -144,7 +210,10 @@ class ReplicationManager:
                 "hash":     chunk_hash,
                 "index":    index,
             })
+
             send_bytes(sock, data)
+
             ack = recv_message(sock)
+
             if ack.get("status") != "OK":
-                raise RuntimeError(f"Node returned error: {ack.get('reason')}")
+                raise RuntimeError(ack.get("reason"))
