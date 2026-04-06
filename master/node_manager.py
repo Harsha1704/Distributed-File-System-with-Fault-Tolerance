@@ -42,25 +42,20 @@ class NodeInfo:
 
 
 class NodeManager:
-    """
-    Maintains the set of known storage nodes.
-
-    Node registration happens either:
-      (a) statically at startup via register_node(), or
-      (b) dynamically when a heartbeat arrives.
-    """
 
     def __init__(self) -> None:
         self._nodes: dict[int, NodeInfo] = {}
         self._lock  = threading.RLock()
+
         self._watchdog_thread = threading.Thread(
             target=self._watchdog, daemon=True, name="NodeWatchdog"
         )
         self._watchdog_thread.start()
+
         logger.info("NodeManager started (watchdog active)")
 
     # ---------------------------------------------------------------- #
-    #  Registration & heartbeat                                          #
+    #  Registration & heartbeat
     # ---------------------------------------------------------------- #
 
     def register_node(self, node_id: int, host: str, port: int) -> None:
@@ -77,19 +72,27 @@ class NodeManager:
                 p = port or (NODE_BASE_PORT + node_id - 1)
                 self._nodes[node_id] = NodeInfo(node_id, h, p)
                 logger.info(f"Auto-registered node {node_id} via heartbeat")
+
             node = self._nodes[node_id]
+
+            # 🔥 CRITICAL FIX: always update heartbeat AND mark alive
             node.last_seen = time.time()
+
             if not node.alive:
-                node.alive = True
                 logger.info(f"Node {node_id} came back ONLINE")
 
+            node.alive = True  # ✅ ENSURE node becomes alive again
+
+            logger.debug(f"Heartbeat received from Node {node_id}")
+
     # ---------------------------------------------------------------- #
-    #  Queries                                                           #
+    #  Queries
     # ---------------------------------------------------------------- #
 
     def live_nodes(self) -> list[NodeInfo]:
         with self._lock:
-            return [n for n in self._nodes.values() if n.alive]
+            alive_nodes = [n for n in self._nodes.values() if n.alive]
+            return alive_nodes
 
     def get_node(self, node_id: int) -> NodeInfo | None:
         with self._lock:
@@ -101,13 +104,20 @@ class NodeManager:
         Nodes in *exclude* are skipped (used during re-replication).
         """
         exclude = exclude or []
+
         with self._lock:
-            candidates = [n for n in self._nodes.values() if n.alive and n.node_id not in exclude]
+            candidates = [
+                n for n in self._nodes.values()
+                if n.alive and n.node_id not in exclude
+            ]
+
+        # 🔥 Improved logging clarity
         if len(candidates) < REPLICATION_FACTOR:
             logger.warning(
                 f"Only {len(candidates)} live node(s) available "
                 f"(replication factor = {REPLICATION_FACTOR})"
             )
+
         random.shuffle(candidates)
         return candidates[:REPLICATION_FACTOR]
 
@@ -125,7 +135,7 @@ class NodeManager:
             ]
 
     # ---------------------------------------------------------------- #
-    #  Watchdog                                                          #
+    #  Watchdog
     # ---------------------------------------------------------------- #
 
     def _watchdog(self) -> None:
@@ -133,6 +143,7 @@ class NodeManager:
         while True:
             time.sleep(HEARTBEAT_INTERVAL)
             now = time.time()
+
             with self._lock:
                 for node in self._nodes.values():
                     if node.alive and (now - node.last_seen) > NODE_TIMEOUT:
