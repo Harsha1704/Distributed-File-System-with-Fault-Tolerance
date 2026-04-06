@@ -121,7 +121,10 @@ class MasterServer:
 
         for cm in chunk_meta:
             nodes = self._nodes.pick_nodes_for_chunk()
+            if not nodes or len(nodes) < 1:
+                return {"status": "ERROR", "reason": "No nodes available"}
 
+            node_addrs = [{"host": n.host, "port": n.port} for n in nodes]
             self._meta.set_chunk_nodes(
                 filename,
                 cm["chunk_id"],
@@ -130,7 +133,7 @@ class MasterServer:
 
             assignments.append({
                 "chunk_id": cm["chunk_id"],
-                "nodes": [n.address for n in nodes]
+                "nodes" : node_addrs
             })
 
         return {"status": "OK", "assignments": assignments}

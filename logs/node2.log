@@ -6,3 +6,34 @@
 2026-04-06 17:26:10 [INFO] node2 — Node 2 ready — listening on port 9101
 2026-04-06 17:28:19 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
 2026-04-06 17:28:19 [INFO] node2 — Node 2 ready — listening on port 9101
+2026-04-06 17:32:25 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
+2026-04-06 17:32:25 [INFO] node2 — Node 2 ready — listening on port 9101
+2026-04-06 17:32:35 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:32:45 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:32:55 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:33:05 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:33:15 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:33:25 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:33:35 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:33:45 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:33:55 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:34:05 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:34:15 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:34:25 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:34:35 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:34:41 [DEBUG] node2 — Heartbeat to master failed: [WinError 10054] An existing connection was forcibly closed by the remote host
+2026-04-06 17:38:06 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
+2026-04-06 17:38:06 [INFO] node2 — Node 2 ready — listening on port 9101
+2026-04-06 17:39:24 [DEBUG] node2 — Heartbeat to master failed: [WinError 10061] No connection could be made because the target machine actively refused it
+2026-04-06 17:39:42 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
+2026-04-06 17:39:42 [INFO] node2 — Node 2 ready — listening on port 9101
+2026-04-06 17:39:56 [DEBUG] node2 — Stored chunk sample1_chunk_0 (129 bytes)
+2026-04-06 17:42:32 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:42:42 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:42:52 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:43:02 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:43:13 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:43:23 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:43:33 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:43:43 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 17:43:53 [DEBUG] node2 — Heartbeat to master failed: timed out
