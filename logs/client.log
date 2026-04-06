@@ -5,3 +5,11 @@
 2026-04-06 18:14:28 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
 2026-04-06 18:14:28 [INFO] client — Upload complete: {'status': 'OK'}
 2026-04-06 18:15:09 [INFO] client — Download plan for 'sample1.txt': 1 chunk(s)
+2026-04-06 18:23:23 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 18:23:23 [INFO] client —   [OK] sample2_chunk_0 stored on 3 node(s)
+2026-04-06 18:23:23 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-06 18:23:44 [INFO] client — Download plan for 'sample2.jpg': 1 chunk(s)
+2026-04-06 18:23:44 [INFO] client —   [OK] sample2_chunk_0 <- 127.0.0.1:9101
+2026-04-06 18:24:46 [ERROR] client — File not found: test_files/sample3.txt
+2026-04-06 18:24:58 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 18:24:58 [INFO] client — Upload complete: {'status': 'OK'}

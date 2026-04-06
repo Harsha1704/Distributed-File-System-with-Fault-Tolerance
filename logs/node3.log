@@ -38,3 +38,36 @@
 2026-04-06 17:43:33 [DEBUG] node3 — Heartbeat to master failed: timed out
 2026-04-06 17:43:43 [DEBUG] node3 — Heartbeat to master failed: timed out
 2026-04-06 17:43:53 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:12:24 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 18:12:24 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 18:14:28 [DEBUG] node3 — Stored chunk sample1_chunk_0 (129 bytes)
+2026-04-06 18:18:15 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:18:25 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:18:35 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:18:46 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:18:56 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:19:06 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:19:16 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:19:26 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:19:36 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:19:46 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:19:56 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:20:06 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:20:16 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:20:26 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:20:36 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:20:46 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:20:56 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:21:06 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:21:16 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:21:26 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:21:36 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:21:46 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:21:56 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:22:06 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:22:16 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:22:26 [DEBUG] node3 — Heartbeat to master failed: timed out
+2026-04-06 18:22:33 [DEBUG] node3 — Heartbeat to master failed: [WinError 10061] No connection could be made because the target machine actively refused it
+2026-04-06 18:22:44 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 18:22:44 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 18:23:23 [DEBUG] node3 — Stored chunk sample2_chunk_0 (2052 bytes)
