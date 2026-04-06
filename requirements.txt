@@ -10,3 +10,5 @@ tqdm>=4.66.0
 
 # Structured logging (optional — drop-in enhancement)
 # python-json-logger>=2.0.7
+python
+PyQt5
