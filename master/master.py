@@ -7,15 +7,14 @@ from __future__ import annotations
 import socket
 import sys
 import threading
+import time
 from pathlib import Path
 
-# Fix encoding (optional but safe)
 try:
     sys.stdout.reconfigure(encoding='utf-8')
 except Exception:
     pass
 
-# Add project root
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from common.constants import MASTER_PORT, NODE_BASE_PORT
@@ -31,7 +30,7 @@ HEARTBEAT_PORT = MASTER_PORT + 1
 
 class MasterServer:
 
-    def __init__(self, host: str = "0.0.0.0", port: int = MASTER_PORT):
+    def __init__(self, host="0.0.0.0", port=MASTER_PORT):
         self._host = host
         self._port = port
 
@@ -39,7 +38,7 @@ class MasterServer:
         self._nodes = NodeManager()
         self._repli = ReplicationManager(self._meta, self._nodes)
 
-        # Register default nodes
+        # Register nodes
         for node_id in range(1, 4):
             self._nodes.register_node(
                 node_id, "127.0.0.1", NODE_BASE_PORT + node_id - 1
@@ -50,27 +49,21 @@ class MasterServer:
         self._server_sock.bind((host, port))
         self._server_sock.listen(50)
 
-        threading.Thread(
-            target=self._heartbeat_listener,
-            daemon=True
-        ).start()
+        threading.Thread(target=self._heartbeat_listener, daemon=True).start()
 
     # ---------------- MAIN LOOP ---------------- #
 
     def serve_forever(self):
         logger.info(f"Master listening on {self._host}:{self._port}")
         while True:
-            try:
-                conn, addr = self._server_sock.accept()
-                threading.Thread(
-                    target=self._handle_client,
-                    args=(conn, addr),
-                    daemon=True
-                ).start()
-            except Exception as e:
-                logger.exception(f"Accept error: {e}")
+            conn, addr = self._server_sock.accept()
+            threading.Thread(
+                target=self._handle_client,
+                args=(conn, addr),
+                daemon=True
+            ).start()
 
-    # ---------------- CLIENT HANDLER ---------------- #
+    # ---------------- CLIENT ---------------- #
 
     def _handle_client(self, conn, addr):
         try:
@@ -78,7 +71,6 @@ class MasterServer:
                 msg = recv_message(conn)
                 action = msg.get("action", "")
 
-                # ✅ FIXED (no Unicode)
                 logger.debug(f"{addr} -> {action}")
 
                 handlers = {
@@ -92,11 +84,9 @@ class MasterServer:
                 }
 
                 handler = handlers.get(action)
-
-                if handler:
-                    response = handler(msg)
-                else:
-                    response = {"status": "ERROR", "reason": "Unknown action"}
+                response = handler(msg) if handler else {
+                    "status": "ERROR", "reason": "Unknown action"
+                }
 
                 send_message(conn, response)
 
@@ -121,10 +111,17 @@ class MasterServer:
 
         for cm in chunk_meta:
             nodes = self._nodes.pick_nodes_for_chunk()
-            if not nodes or len(nodes) < 1:
-                return {"status": "ERROR", "reason": "No nodes available"}
+
+            # 🔥 RETRY FIX
+            if not nodes:
+                time.sleep(1)
+                nodes = self._nodes.pick_nodes_for_chunk()
+
+                if not nodes:
+                    return {"status": "ERROR", "reason": "No nodes available"}
 
             node_addrs = [{"host": n.host, "port": n.port} for n in nodes]
+
             self._meta.set_chunk_nodes(
                 filename,
                 cm["chunk_id"],
@@ -133,7 +130,7 @@ class MasterServer:
 
             assignments.append({
                 "chunk_id": cm["chunk_id"],
-                "nodes" : node_addrs
+                "nodes": node_addrs
             })
 
         return {"status": "OK", "assignments": assignments}
@@ -181,9 +178,9 @@ class MasterServer:
 
     def _handle_delete_file(self, msg):
         record = self._meta.delete_file(msg["filename"])
-        if not record:
-            return {"status": "ERROR", "reason": "File not found"}
-        return {"status": "OK"}
+        return {"status": "OK"} if record else {
+            "status": "ERROR", "reason": "File not found"
+        }
 
     def _handle_heartbeat(self, msg):
         node_id = msg.get("node_id")
@@ -214,11 +211,8 @@ class MasterServer:
                 pass
 
 
-# ---------------- ENTRY ---------------- #
-
 def main():
-    server = MasterServer()
-    server.serve_forever()
+    MasterServer().serve_forever()
 
 
 if __name__ == "__main__":

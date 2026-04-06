@@ -13,7 +13,7 @@ NODE_BASE_PORT    = 9100               # node1=9100, node2=9101, node3=9102
 # Heartbeat / fault-tolerance timings (seconds)
 HEARTBEAT_INTERVAL = 5                 # Nodes send heartbeat every N seconds
 NODE_TIMEOUT       = 15               # Mark node dead after N seconds of silence
-REPLICATION_CHECK_INTERVAL = 30       # How often master checks replica health
+REPLICATION_CHECK_INTERVAL = 3       # How often master checks replica health
 
 # Logging
 LOG_FORMAT  = "%(asctime)s [%(levelname)s] %(name)s — %(message)s"
