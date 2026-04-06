@@ -1,0 +1,9 @@
+2026-04-06 17:16:15 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 17:16:15 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 17:18:11 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 17:18:11 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 17:26:10 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 17:26:10 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 17:28:19 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-06 17:28:19 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-06 17:30:16 [DEBUG] node3 — Heartbeat to master failed: [WinError 10061] No connection could be made because the target machine actively refused it

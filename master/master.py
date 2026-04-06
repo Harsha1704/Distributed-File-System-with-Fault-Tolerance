@@ -1,10 +1,5 @@
 """
 master.py — Central coordinator for the Distributed File System.
-
-Responsibilities:
-  • Accept client connections (upload plan, download plan, list, delete)
-  • Accept node heartbeats
-  • Delegate to MetadataManager, NodeManager, ReplicationManager
 """
 
 from __future__ import annotations
@@ -14,47 +9,55 @@ import sys
 import threading
 from pathlib import Path
 
-# Ensure project root is on the path when run as a module
+# Fix encoding (optional but safe)
+try:
+    sys.stdout.reconfigure(encoding='utf-8')
+except Exception:
+    pass
+
+# Add project root
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from common.constants import MASTER_PORT, NODE_BASE_PORT, REPLICATION_FACTOR
+from common.constants import MASTER_PORT, NODE_BASE_PORT
 from common.utils import send_message, recv_message, get_logger
-from master.metadata_manager   import MetadataManager
-from master.node_manager       import NodeManager
+from master.metadata_manager import MetadataManager
+from master.node_manager import NodeManager
 from master.replication_manager import ReplicationManager
 
 logger = get_logger("master", "logs/master.log")
 
-HEARTBEAT_PORT = MASTER_PORT + 1   # 9001 — lightweight UDP heartbeat listener
+HEARTBEAT_PORT = MASTER_PORT + 1
 
 
 class MasterServer:
-    def __init__(self, host: str = "0.0.0.0", port: int = MASTER_PORT) -> None:
+
+    def __init__(self, host: str = "0.0.0.0", port: int = MASTER_PORT):
         self._host = host
         self._port = port
 
-        self._meta  = MetadataManager()
+        self._meta = MetadataManager()
         self._nodes = NodeManager()
         self._repli = ReplicationManager(self._meta, self._nodes)
 
-        # Pre-register the three default nodes
+        # Register default nodes
         for node_id in range(1, 4):
-            self._nodes.register_node(node_id, "127.0.0.1", NODE_BASE_PORT + node_id - 1)
+            self._nodes.register_node(
+                node_id, "127.0.0.1", NODE_BASE_PORT + node_id - 1
+            )
 
         self._server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self._server_sock.bind((host, port))
         self._server_sock.listen(50)
 
-        # Start heartbeat listener in background
-        threading.Thread(target=self._heartbeat_listener, daemon=True,
-                         name="HeartbeatListener").start()
+        threading.Thread(
+            target=self._heartbeat_listener,
+            daemon=True
+        ).start()
 
-    # ---------------------------------------------------------------- #
-    #  Main accept loop                                                  #
-    # ---------------------------------------------------------------- #
+    # ---------------- MAIN LOOP ---------------- #
 
-    def serve_forever(self) -> None:
+    def serve_forever(self):
         logger.info(f"Master listening on {self._host}:{self._port}")
         while True:
             try:
@@ -62,180 +65,155 @@ class MasterServer:
                 threading.Thread(
                     target=self._handle_client,
                     args=(conn, addr),
-                    daemon=True,
+                    daemon=True
                 ).start()
-            except Exception as exc:
-                logger.error(f"Accept error: {exc}")
+            except Exception as e:
+                logger.exception(f"Accept error: {e}")
 
-    # ---------------------------------------------------------------- #
-    #  Request dispatcher                                                #
-    # ---------------------------------------------------------------- #
+    # ---------------- CLIENT HANDLER ---------------- #
 
-    def _handle_client(self, conn: socket.socket, addr: tuple) -> None:
+    def _handle_client(self, conn, addr):
         try:
             with conn:
                 msg = recv_message(conn)
                 action = msg.get("action", "")
-                logger.debug(f"{addr} → {action}")
+
+                # ✅ FIXED (no Unicode)
+                logger.debug(f"{addr} -> {action}")
 
                 handlers = {
-                    "UPLOAD_PLAN":     self._handle_upload_plan,
+                    "UPLOAD_PLAN": self._handle_upload_plan,
                     "UPLOAD_COMPLETE": self._handle_upload_complete,
-                    "DOWNLOAD_PLAN":   self._handle_download_plan,
-                    "LIST_FILES":      self._handle_list_files,
-                    "DELETE_FILE":     self._handle_delete_file,
-                    "HEARTBEAT":       self._handle_heartbeat,
-                    "NODE_STATUS":     self._handle_node_status,
+                    "DOWNLOAD_PLAN": self._handle_download_plan,
+                    "LIST_FILES": self._handle_list_files,
+                    "DELETE_FILE": self._handle_delete_file,
+                    "HEARTBEAT": self._handle_heartbeat,
+                    "NODE_STATUS": self._handle_node_status,
                 }
 
                 handler = handlers.get(action)
+
                 if handler:
                     response = handler(msg)
                 else:
-                    response = {"status": "ERROR", "reason": f"Unknown action: {action}"}
+                    response = {"status": "ERROR", "reason": "Unknown action"}
 
                 send_message(conn, response)
-        except Exception as exc:
-            logger.warning(f"Error handling {addr}: {exc}")
 
-    # ---------------------------------------------------------------- #
-    #  Handlers                                                          #
-    # ---------------------------------------------------------------- #
+        except Exception as e:
+            logger.exception(f"Client error {addr}: {e}")
 
-    def _handle_upload_plan(self, msg: dict) -> dict:
-        filename   = msg["filename"]
-        chunk_meta = msg["chunk_meta"]     # [{chunk_id, size, hash}, ...]
-        file_hash  = msg["file_hash"]
+    # ---------------- HANDLERS ---------------- #
+
+    def _handle_upload_plan(self, msg):
+        filename = msg["filename"]
+        chunk_meta = msg["chunk_meta"]
+        file_hash = msg["file_hash"]
         num_chunks = msg["num_chunks"]
 
         self._meta.create_file(filename, file_hash, num_chunks, chunk_meta)
 
         live = self._nodes.live_nodes()
         if not live:
-            return {"status": "ERROR", "reason": "No live storage nodes available."}
+            return {"status": "ERROR", "reason": "No nodes available"}
 
         assignments = []
-        for i, cm in enumerate(chunk_meta):
-            nodes = self._nodes.pick_nodes_for_chunk()
-            node_addrs = [n.address for n in nodes]
-            # Record planned node IDs in metadata
-            self._meta.set_chunk_nodes(filename, cm["chunk_id"], [n.node_id for n in nodes])
-            assignments.append({"chunk_id": cm["chunk_id"], "nodes": node_addrs})
 
-        logger.info(f"Upload plan for '{filename}': {num_chunks} chunk(s), "
-                    f"{len(live)} live node(s)")
+        for cm in chunk_meta:
+            nodes = self._nodes.pick_nodes_for_chunk()
+
+            self._meta.set_chunk_nodes(
+                filename,
+                cm["chunk_id"],
+                [n.node_id for n in nodes]
+            )
+
+            assignments.append({
+                "chunk_id": cm["chunk_id"],
+                "nodes": [n.address for n in nodes]
+            })
+
         return {"status": "OK", "assignments": assignments}
 
-    def _handle_upload_complete(self, msg: dict) -> dict:
-        filename = msg["filename"]
-        self._meta.mark_upload_complete(filename)
-        logger.info(f"Upload complete: '{filename}'")
-        return {"status": "OK", "message": f"'{filename}' is now available."}
+    def _handle_upload_complete(self, msg):
+        self._meta.mark_upload_complete(msg["filename"])
+        return {"status": "OK"}
 
-    def _handle_download_plan(self, msg: dict) -> dict:
+    def _handle_download_plan(self, msg):
         filename = msg["filename"]
-        record   = self._meta.get_file(filename)
+        record = self._meta.get_file(filename)
+
         if not record:
-            return {"status": "ERROR", "reason": f"File '{filename}' not found."}
+            return {"status": "ERROR", "reason": "File not found"}
 
         live_ids = {n.node_id for n in self._nodes.live_nodes()}
-        chunks_out = []
+        chunks = []
 
         for chunk in self._meta.get_chunks_for_file(filename):
-            live_nodes = [
+            nodes = [
                 self._nodes.get_node(nid).address
                 for nid in chunk["nodes"]
-                if nid in live_ids and self._nodes.get_node(nid) is not None
+                if nid in live_ids
             ]
-            if not live_nodes:
-                return {
-                    "status": "ERROR",
-                    "reason": f"Chunk {chunk['chunk_id']} is unavailable (all replicas down).",
-                }
-            chunks_out.append({
+
+            if not nodes:
+                return {"status": "ERROR", "reason": "Chunk unavailable"}
+
+            chunks.append({
                 "chunk_id": chunk["chunk_id"],
-                "index":    chunk["index"],
-                "hash":     chunk["hash"],
-                "nodes":    live_nodes,
+                "index": chunk["index"],
+                "hash": chunk["hash"],
+                "nodes": nodes
             })
 
         return {
-            "status":    "OK",
-            "filename":  filename,
+            "status": "OK",
+            "filename": filename,
             "file_hash": record["file_hash"],
-            "chunks":    chunks_out,
+            "chunks": chunks
         }
 
-    def _handle_list_files(self, _msg: dict) -> dict:
+    def _handle_list_files(self, _):
         return {"status": "OK", "files": self._meta.list_files()}
 
-    def _handle_delete_file(self, msg: dict) -> dict:
-        filename = msg["filename"]
-        record   = self._meta.delete_file(filename)
+    def _handle_delete_file(self, msg):
+        record = self._meta.delete_file(msg["filename"])
         if not record:
-            return {"status": "ERROR", "reason": f"File '{filename}' not found."}
-        # Best-effort deletion from nodes (ignore errors)
-        live_ids = {n.node_id for n in self._nodes.live_nodes()}
-        for chunk in record["chunks"].values():
-            for nid in chunk["nodes"]:
-                if nid not in live_ids:
-                    continue
-                node = self._nodes.get_node(nid)
-                if node:
-                    try:
-                        self._delete_chunk_on_node(node.host, node.port, chunk["chunk_id"])
-                    except Exception:
-                        pass
-        logger.info(f"Deleted '{filename}' from DFS")
-        return {"status": "OK", "message": f"'{filename}' deleted."}
-
-    def _handle_heartbeat(self, msg: dict) -> dict:
-        node_id = msg.get("node_id")
-        host    = msg.get("host", "127.0.0.1")
-        port    = msg.get("port")
-        if node_id:
-            self._nodes.heartbeat(node_id, host, port)
+            return {"status": "ERROR", "reason": "File not found"}
         return {"status": "OK"}
 
-    def _handle_node_status(self, _msg: dict) -> dict:
+    def _handle_heartbeat(self, msg):
+        node_id = msg.get("node_id")
+        if node_id:
+            self._nodes.heartbeat(node_id, msg.get("host"), msg.get("port"))
+        return {"status": "OK"}
+
+    def _handle_node_status(self, _):
         return {"status": "OK", "nodes": self._nodes.all_nodes()}
 
-    # ---------------------------------------------------------------- #
-    #  UDP heartbeat listener (alternative to TCP)                       #
-    # ---------------------------------------------------------------- #
+    # ---------------- HEARTBEAT ---------------- #
 
-    def _heartbeat_listener(self) -> None:
+    def _heartbeat_listener(self):
         import json
+
         udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         udp.bind(("0.0.0.0", HEARTBEAT_PORT))
-        logger.info(f"UDP heartbeat listener on port {HEARTBEAT_PORT}")
+
         while True:
             try:
                 data, addr = udp.recvfrom(512)
-                msg = json.loads(data.decode("utf-8"))
-                node_id = msg.get("node_id")
-                if node_id:
-                    self._nodes.heartbeat(node_id, addr[0], msg.get("port"))
+                msg = json.loads(data.decode())
+
+                if msg.get("node_id"):
+                    self._nodes.heartbeat(msg["node_id"], addr[0], msg.get("port"))
+
             except Exception:
                 pass
 
-    # ---------------------------------------------------------------- #
-    #  Helper                                                            #
-    # ---------------------------------------------------------------- #
 
-    @staticmethod
-    def _delete_chunk_on_node(host: str, port: int, chunk_id: str) -> None:
-        from common.constants import SOCKET_TIMEOUT
-        with socket.create_connection((host, port), timeout=SOCKET_TIMEOUT) as sock:
-            send_message(sock, {"action": "DELETE_CHUNK", "chunk_id": chunk_id})
-            recv_message(sock)
+# ---------------- ENTRY ---------------- #
 
-
-# ------------------------------------------------------------------ #
-#  Entry point                                                         #
-# ------------------------------------------------------------------ #
-
-def main() -> None:
+def main():
     server = MasterServer()
     server.serve_forever()
 
