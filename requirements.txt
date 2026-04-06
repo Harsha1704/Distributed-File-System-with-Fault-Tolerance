@@ -1,0 +1,12 @@
+# DFS Project — Python dependencies
+# All core functionality uses the standard library only.
+# The packages below are optional quality-of-life additions.
+
+# Pretty terminal output
+colorama>=0.4.6
+
+# Progress bars for large file transfers
+tqdm>=4.66.0
+
+# Structured logging (optional — drop-in enhancement)
+# python-json-logger>=2.0.7
