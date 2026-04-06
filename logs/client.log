@@ -27,3 +27,10 @@
 2026-04-06 18:44:49 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
 2026-04-06 18:44:49 [INFO] client — Upload complete: {'status': 'OK'}
 2026-04-06 18:46:10 [INFO] client — Download plan for 'sas.txt': 0 chunk(s)
+2026-04-06 18:55:29 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 18:55:29 [INFO] client —   [OK] sample1_chunk_0 stored on 3 node(s)
+2026-04-06 18:55:29 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-06 18:55:45 [INFO] client — Download plan for 'sample1.txt': 1 chunk(s)
+2026-04-06 18:55:45 [INFO] client —   [OK] sample1_chunk_0 <- 127.0.0.1:9100
+2026-04-06 18:56:41 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 18:56:41 [INFO] client — Upload complete: {'status': 'OK'}
