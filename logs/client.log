@@ -2,3 +2,6 @@
 2026-04-06 17:39:56 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
 2026-04-06 17:39:56 [INFO] client — Upload complete: {'status': 'OK'}
 2026-04-06 17:40:47 [INFO] client — Download plan for 'sample1.txt': 1 chunk(s)
+2026-04-06 18:14:28 [INFO] client — Upload plan received. Pushing chunks to storage nodes …
+2026-04-06 18:14:28 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-06 18:15:09 [INFO] client — Download plan for 'sample1.txt': 1 chunk(s)

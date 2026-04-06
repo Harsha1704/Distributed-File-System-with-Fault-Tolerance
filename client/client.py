@@ -105,7 +105,7 @@ def upload(local_path: str) -> None:
         if errors:
             logger.warning(f"Chunk {chunk_id} partial failure: {errors}")
         else:
-            logger.info(f"  ✓ {chunk_id} stored on {len(assignment['nodes'])} node(s)")
+            logger.info(f"  [OK] {chunk_id} stored on {len(assignment['nodes'])} node(s)")
 
     # --- Notify master that upload is complete ---
     with _master_conn() as sock:
@@ -152,7 +152,7 @@ def download(remote_filename: str) -> None:
                         "data":  data,
                         "hash":  chunk_info["hash"],
                     })
-                    logger.info(f"  ✓ {chunk_id} ← {host}:{port}")
+                    logger.info(f"  [OK] {chunk_id} <- {host}:{port}")
                     fetched = True
                     break
             except Exception as exc:
@@ -165,7 +165,7 @@ def download(remote_filename: str) -> None:
     ensure_dir(DOWNLOAD_DIR)
     output = Path(DOWNLOAD_DIR) / remote_filename
     assemble_download(chunk_descriptors, output, plan.get("file_hash"))
-    print(f"\n✅  Downloaded → {output}")
+    print(f"\n[OK] Downloaded → {output}")
 
 
 def list_files() -> None:

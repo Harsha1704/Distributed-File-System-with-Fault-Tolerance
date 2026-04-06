@@ -1,1 +1,22 @@
-{}
+{
+  "sample1.txt": {
+    "filename": "sample1.txt",
+    "file_hash": "88152dc02da6aac8b41aa9715385379d89847cd3da6d8c6123d87fcf20265317",
+    "num_chunks": 1,
+    "uploaded_at": "2026-04-06T12:44:28Z",
+    "status": "ready",
+    "chunks": {
+      "sample1_chunk_0": {
+        "chunk_id": "sample1_chunk_0",
+        "index": 0,
+        "size": 129,
+        "hash": "88152dc02da6aac8b41aa9715385379d89847cd3da6d8c6123d87fcf20265317",
+        "nodes": [
+          3,
+          2,
+          1
+        ]
+      }
+    }
+  }
+}

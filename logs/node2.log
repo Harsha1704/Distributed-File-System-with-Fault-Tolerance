@@ -37,3 +37,6 @@
 2026-04-06 17:43:33 [DEBUG] node2 — Heartbeat to master failed: timed out
 2026-04-06 17:43:43 [DEBUG] node2 — Heartbeat to master failed: timed out
 2026-04-06 17:43:53 [DEBUG] node2 — Heartbeat to master failed: timed out
+2026-04-06 18:12:24 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
+2026-04-06 18:12:24 [INFO] node2 — Node 2 ready — listening on port 9101
+2026-04-06 18:14:28 [DEBUG] node2 — Stored chunk sample1_chunk_0 (129 bytes)
