@@ -66,5 +66,25 @@
     "uploaded_at": "2026-04-06T17:24:48Z",
     "status": "ready",
     "chunks": {}
+  },
+  "sample5.jpg": {
+    "filename": "sample5.jpg",
+    "file_hash": "8141e4f617e0bf730f9873ee667f399a7047d3bfc9592d317e9b9bb5f8541ec9",
+    "num_chunks": 1,
+    "uploaded_at": "2026-04-07T09:52:18Z",
+    "status": "ready",
+    "chunks": {
+      "sample5_chunk_0": {
+        "chunk_id": "sample5_chunk_0",
+        "index": 0,
+        "size": 2052,
+        "hash": "8141e4f617e0bf730f9873ee667f399a7047d3bfc9592d317e9b9bb5f8541ec9",
+        "nodes": [
+          2,
+          3,
+          1
+        ]
+      }
+    }
   }
 }

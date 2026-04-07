@@ -113,3 +113,6 @@
 2026-04-06 22:54:11 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
 2026-04-06 22:54:11 [INFO] node1 — Node 1 ready — listening on port 9100
 2026-04-06 22:54:40 [DEBUG] node1 — Stored chunk sample4_chunk_0 (129 bytes)
+2026-04-07 15:22:02 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-07 15:22:02 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-07 15:22:18 [DEBUG] node1 — Stored chunk sample5_chunk_0 (2052 bytes)
