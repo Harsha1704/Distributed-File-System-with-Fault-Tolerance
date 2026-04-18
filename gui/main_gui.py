@@ -17,6 +17,7 @@ from gui.node_monitor import NodeMonitor
 from gui.analytics_page import AnalyticsPage
 from gui.logs_page import LogsPage
 from gui.shared_state import GUI_STATE
+from gui.guide_page import GuidePage
 
 
 DARK_THEME = """
@@ -258,7 +259,7 @@ class DFSGui(QMainWindow):
         self.nav.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.nav.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.nav.setFixedHeight(360)
-        for text in ['📊 Dashboard', '📁 File Manager', '🖧 Nodes', '📈 Analytics', '🧾 Logs']:
+        for text in ['📊 Dashboard', '📁 File Manager', '🖧 Nodes', '📈 Analytics', '🧾 Logs','📘 Guide']:
             QListWidgetItem(text, self.nav)
         self.nav.setCurrentRow(0)
 
@@ -294,6 +295,7 @@ class DFSGui(QMainWindow):
         self.stack.addWidget(NodeMonitor())
         self.stack.addWidget(AnalyticsPage())
         self.stack.addWidget(LogsPage())
+        self.stack.addWidget(GuidePage())
 
         content_layout.addWidget(top)
         content_layout.addWidget(self.stack, 1)
@@ -329,6 +331,7 @@ class DFSGui(QMainWindow):
             ('Nodes', 'Heartbeat monitoring and cluster node availability'),
             ('Analytics', 'Charts and short rolling trend analysis'),
             ('Logs', 'Recent GUI activity and cluster events'),
+            ('Guide', 'Architecture, module locations, and project explanation'),
         ]
         title, subtitle = labels[index]
         self.section_title.setText(f'DFS Control Center • {title}')
@@ -338,7 +341,7 @@ class DFSGui(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
-    app.setFont(QFont('Segoe UI', 10))
+    app.setFont(QFont('Segoe UI', 16))
     app.setStyleSheet(DARK_THEME)
     window = DFSGui()
     window.show()
