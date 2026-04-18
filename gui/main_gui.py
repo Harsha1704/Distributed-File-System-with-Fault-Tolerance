@@ -217,7 +217,6 @@ QLabel#statusBadge {
     background: transparent;
     border: none;
 }
-
 """
 
 

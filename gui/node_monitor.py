@@ -1,3 +1,4 @@
+
 import socket
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QLabel, QFrame, QHBoxLayout
@@ -89,8 +90,9 @@ class NodeMonitor(QWidget):
             send_message(sock, {'action': 'NODE_STATUS'})
             response = recv_message(sock)
             sock.close()
+            nodes = response.get('nodes', [])
             seen = set(); active = 0
-            for node in response.get('nodes', []):
+            for node in nodes:
                 node_id = node.get('node_id')
                 if node_id in self.cards:
                     alive = node.get('alive', False)
@@ -99,7 +101,8 @@ class NodeMonitor(QWidget):
                     seen.add(node_id)
                     prev = self.last_states.get(node_id)
                     if prev is None or prev != alive:
-                        GUI_STATE.add_log('INFO' if alive else 'WARN', 'Nodes', f"Node {node_id} changed state to {'ACTIVE' if alive else 'DEAD'}.")
+                        state_text = 'ACTIVE' if alive else 'DEAD'
+                        GUI_STATE.add_log('INFO' if alive else 'WARN', 'Nodes', f'Node {node_id} changed state to {state_text}.')
                     self.last_states[node_id] = alive
             for node_id, card in self.cards.items():
                 if node_id not in seen:
@@ -113,6 +116,7 @@ class NodeMonitor(QWidget):
                 self.summary_meta.setText(f'{active}/{total} node(s) are active. Cluster is partially available.')
             else:
                 self.summary_meta.setText('No nodes are active. Cluster is unavailable.')
+            GUI_STATE.set_nodes(nodes)
             GUI_STATE.update_stats(active_nodes=active, total_nodes=total)
         except Exception:
             for card in self.cards.values():

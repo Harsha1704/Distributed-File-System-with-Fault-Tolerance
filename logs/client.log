@@ -98,3 +98,27 @@
 2026-04-18 10:18:47 [INFO] client —   [OK] Task 2 Guide_chunk_9 stored on 3 node(s)
 2026-04-18 10:18:47 [INFO] client —   [OK] Task 2 Guide_chunk_10 stored on 3 node(s)
 2026-04-18 10:18:47 [INFO] client — Upload complete: {'status': 'OK'}
+2026-04-18 10:33:18 [INFO] client — Download plan for 'Task 2 Guide.pdf': 11 chunk(s)
+2026-04-18 10:33:18 [INFO] client —   [OK] Task 2 Guide_chunk_0 <- 127.0.0.1:9101
+2026-04-18 10:33:18 [INFO] client —   [OK] Task 2 Guide_chunk_1 <- 127.0.0.1:9100
+2026-04-18 10:33:18 [INFO] client —   [OK] Task 2 Guide_chunk_2 <- 127.0.0.1:9101
+2026-04-18 10:33:18 [INFO] client —   [OK] Task 2 Guide_chunk_3 <- 127.0.0.1:9100
+2026-04-18 10:33:19 [INFO] client —   [OK] Task 2 Guide_chunk_4 <- 127.0.0.1:9100
+2026-04-18 10:33:19 [INFO] client —   [OK] Task 2 Guide_chunk_5 <- 127.0.0.1:9100
+2026-04-18 10:33:19 [INFO] client —   [OK] Task 2 Guide_chunk_6 <- 127.0.0.1:9101
+2026-04-18 10:33:19 [INFO] client —   [OK] Task 2 Guide_chunk_7 <- 127.0.0.1:9101
+2026-04-18 10:33:19 [INFO] client —   [OK] Task 2 Guide_chunk_8 <- 127.0.0.1:9101
+2026-04-18 10:33:19 [INFO] client —   [OK] Task 2 Guide_chunk_9 <- 127.0.0.1:9100
+2026-04-18 10:33:19 [INFO] client —   [OK] Task 2 Guide_chunk_10 <- 127.0.0.1:9100
+2026-04-18 10:48:36 [INFO] client — Download plan for 'Task 2 Guide.pdf': 11 chunk(s)
+2026-04-18 10:48:36 [INFO] client —   [OK] Task 2 Guide_chunk_0 <- 127.0.0.1:9102
+2026-04-18 10:48:36 [INFO] client —   [OK] Task 2 Guide_chunk_1 <- 127.0.0.1:9100
+2026-04-18 10:48:36 [INFO] client —   [OK] Task 2 Guide_chunk_2 <- 127.0.0.1:9102
+2026-04-18 10:48:36 [INFO] client —   [OK] Task 2 Guide_chunk_3 <- 127.0.0.1:9100
+2026-04-18 10:48:36 [INFO] client —   [OK] Task 2 Guide_chunk_4 <- 127.0.0.1:9100
+2026-04-18 10:48:36 [INFO] client —   [OK] Task 2 Guide_chunk_5 <- 127.0.0.1:9100
+2026-04-18 10:48:36 [INFO] client —   [OK] Task 2 Guide_chunk_6 <- 127.0.0.1:9102
+2026-04-18 10:48:36 [INFO] client —   [OK] Task 2 Guide_chunk_7 <- 127.0.0.1:9100
+2026-04-18 10:48:36 [INFO] client —   [OK] Task 2 Guide_chunk_8 <- 127.0.0.1:9102
+2026-04-18 10:48:36 [INFO] client —   [OK] Task 2 Guide_chunk_9 <- 127.0.0.1:9100
+2026-04-18 10:48:36 [INFO] client —   [OK] Task 2 Guide_chunk_10 <- 127.0.0.1:9100

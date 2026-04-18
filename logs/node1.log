@@ -173,3 +173,15 @@
 2026-04-18 10:18:47 [DEBUG] node1 — Stored chunk Task 2 Guide_chunk_8 (1048576 bytes)
 2026-04-18 10:18:47 [DEBUG] node1 — Stored chunk Task 2 Guide_chunk_9 (1048576 bytes)
 2026-04-18 10:18:47 [DEBUG] node1 — Stored chunk Task 2 Guide_chunk_10 (576590 bytes)
+2026-04-18 10:31:57 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-18 10:31:57 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-18 10:40:21 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-18 10:40:21 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-18 10:46:31 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-18 10:46:31 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-18 10:51:56 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-18 10:51:56 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-18 11:00:44 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-18 11:00:44 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-18 11:02:42 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-18 11:02:42 [INFO] node1 — Node 1 ready — listening on port 9100
