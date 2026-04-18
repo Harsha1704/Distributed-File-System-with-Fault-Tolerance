@@ -180,3 +180,5 @@
 2026-04-18 11:00:44 [INFO] node3 — Node 3 ready — listening on port 9102
 2026-04-18 11:02:42 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
 2026-04-18 11:02:42 [INFO] node3 — Node 3 ready — listening on port 9102
+2026-04-18 11:18:54 [INFO] node3 — Node 3 starting on port 9102 (storage: nodes\storage\node3)
+2026-04-18 11:18:54 [INFO] node3 — Node 3 ready — listening on port 9102

@@ -155,3 +155,5 @@
 2026-04-18 11:00:44 [INFO] node2 — Node 2 ready — listening on port 9101
 2026-04-18 11:02:42 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
 2026-04-18 11:02:42 [INFO] node2 — Node 2 ready — listening on port 9101
+2026-04-18 11:18:54 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
+2026-04-18 11:18:54 [INFO] node2 — Node 2 ready — listening on port 9101
