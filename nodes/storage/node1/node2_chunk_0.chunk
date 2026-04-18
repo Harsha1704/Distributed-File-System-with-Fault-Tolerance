@@ -119,27 +119,3 @@
 2026-04-18 10:08:33 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
 2026-04-18 10:08:33 [INFO] node2 — Node 2 ready — listening on port 9101
 2026-04-18 10:08:59 [DEBUG] node2 — Stored chunk README_chunk_0 (11773 bytes)
-2026-04-18 10:09:11 [DEBUG] node2 — Stored chunk node2_chunk_0 (10098 bytes)
-2026-04-18 10:12:02 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
-2026-04-18 10:12:02 [INFO] node2 — Node 2 ready — listening on port 9101
-2026-04-18 10:12:41 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
-2026-04-18 10:12:41 [INFO] node2 — Node 2 ready — listening on port 9101
-2026-04-18 10:13:10 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
-2026-04-18 10:13:10 [INFO] node2 — Node 2 ready — listening on port 9101
-2026-04-18 10:15:24 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
-2026-04-18 10:15:24 [INFO] node2 — Node 2 ready — listening on port 9101
-2026-04-18 10:16:04 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
-2026-04-18 10:16:04 [INFO] node2 — Node 2 ready — listening on port 9101
-2026-04-18 10:18:35 [INFO] node2 — Node 2 starting on port 9101 (storage: nodes\storage\node2)
-2026-04-18 10:18:35 [INFO] node2 — Node 2 ready — listening on port 9101
-2026-04-18 10:18:46 [DEBUG] node2 — Stored chunk Task 2 Guide_chunk_0 (1048576 bytes)
-2026-04-18 10:18:46 [DEBUG] node2 — Stored chunk Task 2 Guide_chunk_1 (1048576 bytes)
-2026-04-18 10:18:46 [DEBUG] node2 — Stored chunk Task 2 Guide_chunk_2 (1048576 bytes)
-2026-04-18 10:18:46 [DEBUG] node2 — Stored chunk Task 2 Guide_chunk_3 (1048576 bytes)
-2026-04-18 10:18:46 [DEBUG] node2 — Stored chunk Task 2 Guide_chunk_4 (1048576 bytes)
-2026-04-18 10:18:47 [DEBUG] node2 — Stored chunk Task 2 Guide_chunk_5 (1048576 bytes)
-2026-04-18 10:18:47 [DEBUG] node2 — Stored chunk Task 2 Guide_chunk_6 (1048576 bytes)
-2026-04-18 10:18:47 [DEBUG] node2 — Stored chunk Task 2 Guide_chunk_7 (1048576 bytes)
-2026-04-18 10:18:47 [DEBUG] node2 — Stored chunk Task 2 Guide_chunk_8 (1048576 bytes)
-2026-04-18 10:18:47 [DEBUG] node2 — Stored chunk Task 2 Guide_chunk_9 (1048576 bytes)
-2026-04-18 10:18:47 [DEBUG] node2 — Stored chunk Task 2 Guide_chunk_10 (576590 bytes)

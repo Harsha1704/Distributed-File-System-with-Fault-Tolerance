@@ -19,54 +19,6 @@
       }
     }
   },
-  "sample1.txt": {
-    "filename": "sample1.txt",
-    "file_hash": "88152dc02da6aac8b41aa9715385379d89847cd3da6d8c6123d87fcf20265317",
-    "num_chunks": 1,
-    "uploaded_at": "2026-04-06T17:15:24Z",
-    "status": "ready",
-    "chunks": {
-      "sample1_chunk_0": {
-        "chunk_id": "sample1_chunk_0",
-        "index": 0,
-        "size": 129,
-        "hash": "88152dc02da6aac8b41aa9715385379d89847cd3da6d8c6123d87fcf20265317",
-        "nodes": [
-          2,
-          1,
-          3
-        ]
-      }
-    }
-  },
-  "sample4.txt": {
-    "filename": "sample4.txt",
-    "file_hash": "88152dc02da6aac8b41aa9715385379d89847cd3da6d8c6123d87fcf20265317",
-    "num_chunks": 1,
-    "uploaded_at": "2026-04-06T17:24:40Z",
-    "status": "ready",
-    "chunks": {
-      "sample4_chunk_0": {
-        "chunk_id": "sample4_chunk_0",
-        "index": 0,
-        "size": 129,
-        "hash": "88152dc02da6aac8b41aa9715385379d89847cd3da6d8c6123d87fcf20265317",
-        "nodes": [
-          2,
-          1,
-          3
-        ]
-      }
-    }
-  },
-  "sas.txt": {
-    "filename": "sas.txt",
-    "file_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "num_chunks": 0,
-    "uploaded_at": "2026-04-06T17:24:48Z",
-    "status": "ready",
-    "chunks": {}
-  },
   "sample5.jpg": {
     "filename": "sample5.jpg",
     "file_hash": "8141e4f617e0bf730f9873ee667f399a7047d3bfc9592d317e9b9bb5f8541ec9",
@@ -83,6 +35,156 @@
           2,
           3,
           1
+        ]
+      }
+    }
+  },
+  "README.md": {
+    "filename": "README.md",
+    "file_hash": "6411f51c06926034aee6f815d3964eaddf0b23cd8c7fb002fe0f469b8a171c3a",
+    "num_chunks": 1,
+    "uploaded_at": "2026-04-18T04:38:59Z",
+    "status": "ready",
+    "chunks": {
+      "README_chunk_0": {
+        "chunk_id": "README_chunk_0",
+        "index": 0,
+        "size": 11773,
+        "hash": "6411f51c06926034aee6f815d3964eaddf0b23cd8c7fb002fe0f469b8a171c3a",
+        "nodes": [
+          1,
+          3,
+          2
+        ]
+      }
+    }
+  },
+  "Task 2 Guide.pdf": {
+    "filename": "Task 2 Guide.pdf",
+    "file_hash": "05f047aa0a5e1eabf7f3f02ad898db870a6b1a4f29d8d3c2de7db5f5401ffb2e",
+    "num_chunks": 11,
+    "uploaded_at": "2026-04-18T04:48:46Z",
+    "status": "ready",
+    "chunks": {
+      "Task 2 Guide_chunk_0": {
+        "chunk_id": "Task 2 Guide_chunk_0",
+        "index": 0,
+        "size": 1048576,
+        "hash": "303a68c26e2cfb271d157ecee9256261e32d7b5b583d97110b40478bdd441620",
+        "nodes": [
+          2,
+          3,
+          1
+        ]
+      },
+      "Task 2 Guide_chunk_1": {
+        "chunk_id": "Task 2 Guide_chunk_1",
+        "index": 1,
+        "size": 1048576,
+        "hash": "4823e91107722f0c4f7657426ed5da5878581471cf13f92c7f17f4f2b109056e",
+        "nodes": [
+          1,
+          3,
+          2
+        ]
+      },
+      "Task 2 Guide_chunk_2": {
+        "chunk_id": "Task 2 Guide_chunk_2",
+        "index": 2,
+        "size": 1048576,
+        "hash": "5cee8a02f05fce52e19e3b7c1a49acbd77ceba50d180fb07ecbe918a6c8fe707",
+        "nodes": [
+          3,
+          2,
+          1
+        ]
+      },
+      "Task 2 Guide_chunk_3": {
+        "chunk_id": "Task 2 Guide_chunk_3",
+        "index": 3,
+        "size": 1048576,
+        "hash": "eec91f2111d1ec714c3d1a28442584ecb2527d11119b36932f492e405e0040b1",
+        "nodes": [
+          1,
+          3,
+          2
+        ]
+      },
+      "Task 2 Guide_chunk_4": {
+        "chunk_id": "Task 2 Guide_chunk_4",
+        "index": 4,
+        "size": 1048576,
+        "hash": "e5357533edf0f79038d6015fd9f646064317eead2cd49caea6010437e2c1ed4f",
+        "nodes": [
+          1,
+          3,
+          2
+        ]
+      },
+      "Task 2 Guide_chunk_5": {
+        "chunk_id": "Task 2 Guide_chunk_5",
+        "index": 5,
+        "size": 1048576,
+        "hash": "864ac06005bbe93945003786c3cf222b5d0370ded96ef6c7c8f8577192c095a1",
+        "nodes": [
+          1,
+          2,
+          3
+        ]
+      },
+      "Task 2 Guide_chunk_6": {
+        "chunk_id": "Task 2 Guide_chunk_6",
+        "index": 6,
+        "size": 1048576,
+        "hash": "9e354d30bafb0b730d9bd3e2b67829c031863be1880d50eab9dacdcd8f08ebc9",
+        "nodes": [
+          2,
+          3,
+          1
+        ]
+      },
+      "Task 2 Guide_chunk_7": {
+        "chunk_id": "Task 2 Guide_chunk_7",
+        "index": 7,
+        "size": 1048576,
+        "hash": "d470a3827ca2a5270fe2c92419b4ed8ac0cc03f820e373c1e0e749a7ee40009a",
+        "nodes": [
+          2,
+          1,
+          3
+        ]
+      },
+      "Task 2 Guide_chunk_8": {
+        "chunk_id": "Task 2 Guide_chunk_8",
+        "index": 8,
+        "size": 1048576,
+        "hash": "7b41edece244b9a662bb46a0340a729790c13ebe5bc6f6d6d7444f0aa28d16ae",
+        "nodes": [
+          3,
+          2,
+          1
+        ]
+      },
+      "Task 2 Guide_chunk_9": {
+        "chunk_id": "Task 2 Guide_chunk_9",
+        "index": 9,
+        "size": 1048576,
+        "hash": "e1920e9ab7cdfdace5630f9eb8f2e3d46d6a339e44b8e81393d9831ef66c19dc",
+        "nodes": [
+          1,
+          3,
+          2
+        ]
+      },
+      "Task 2 Guide_chunk_10": {
+        "chunk_id": "Task 2 Guide_chunk_10",
+        "index": 10,
+        "size": 576590,
+        "hash": "0fd6ae4cad608f92bc88175afb749475337e7dea4389832cb615be6b65cdc0ab",
+        "nodes": [
+          1,
+          2,
+          3
         ]
       }
     }
