@@ -215,3 +215,7 @@
 2026-04-18 12:43:44 [INFO] node1 — Node 1 ready — listening on port 9100
 2026-04-18 12:44:30 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
 2026-04-18 12:44:30 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-22 14:31:58 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-22 14:31:58 [INFO] node1 — Node 1 ready — listening on port 9100
+2026-04-30 22:21:11 [INFO] node1 — Node 1 starting on port 9100 (storage: nodes\storage\node1)
+2026-04-30 22:21:11 [INFO] node1 — Node 1 ready — listening on port 9100
